@@ -8,23 +8,46 @@ import android.util.Rational
 import android.util.Size
 import android.view.Surface
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.camera.core.*
 import androidx.fragment.app.FragmentActivity
 import com.github.florent37.runtimepermission.RuntimePermission
+import com.safetymarcus.portfolio.PortfolioApplication
 import com.safetymarcus.portfolio.R
 import com.safetymarcus.portfolio.utils.CoroutineActivity
 import kotlinx.android.synthetic.main.video_capture_activity.*
+import java.io.File
+import java.util.*
 
 /**
  * @author Marcus Hooper
  */
 class VideoCaptureActivity : CoroutineActivity() {
 
+    private lateinit var preview: Preview
+    private lateinit var capture: VideoCapture
+    private var recording = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.video_capture_activity)
+        File(
+            "${PortfolioApplication.INSTANCE.externalMediaDirs.takeIf { it.isNotEmpty() }?.get(0)?.absolutePath
+                ?: ""}/portfolio/"
+        ).mkdirs()
+
         camera.post { startCamera() }
         camera.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> updateTransform() }
+        record.setOnClickListener {
+            if (recording) {
+                capture.stopRecording()
+                record.setImageResource(R.drawable.record)
+            } else {
+                capture.startRecording(videoLocation, videoCaptureListener)
+                record.setImageResource(R.drawable.stop)
+            }
+            recording = !recording
+        }
     }
 
     private fun startCamera() {
@@ -39,12 +62,11 @@ class VideoCaptureActivity : CoroutineActivity() {
             setTargetResolution(Size(camera.width, camera.height))
         }.build()
 
-        val preview = Preview(previewConfig)
-        val capture = VideoCapture(config)
+        preview = Preview(previewConfig)
+        capture = VideoCapture(config)
 
         // Every time the viewfinder is updated, recompute layout
         preview.onPreviewOutputUpdateListener = Preview.OnPreviewOutputUpdateListener {
-
             // To update the SurfaceTexture, we have to remove it and re-add it
             val parent = camera.parent as ViewGroup
             parent.removeView(camera)
@@ -56,6 +78,26 @@ class VideoCaptureActivity : CoroutineActivity() {
 
         CameraX.bindToLifecycle(this, preview, capture)
     }
+
+    val videoCaptureListener = object : VideoCapture.OnVideoSavedListener {
+        override fun onVideoSaved(file: File?) {
+            Toast.makeText(this@VideoCaptureActivity, "Video saved to ${file?.absolutePath}", Toast.LENGTH_LONG).show()
+        }
+
+        override fun onError(useCaseError: VideoCapture.UseCaseError?, message: String?, cause: Throwable?) {
+            Toast.makeText(
+                this@VideoCaptureActivity,
+                "Failed to save video because of $useCaseError",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    val videoLocation
+        get() = File(
+            "${PortfolioApplication.INSTANCE.externalMediaDirs.takeIf { it.isNotEmpty() }?.get(0)?.absolutePath
+                ?: ""}/portfolio/${UUID.randomUUID()}.mp4"
+        ).also { it.createNewFile() }
 
     private fun updateTransform() {
         val matrix = Matrix()

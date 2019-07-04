@@ -4,9 +4,12 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.SharedPreferences
+import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.util.TypedValue
+import android.view.Surface
+import android.view.TextureView
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.edit
@@ -168,4 +171,25 @@ inline fun <reified T : Any> Activity.extra(key: String, default: T) = lazy {
  */
 inline fun <reified T : Any> Fragment.argument(key: String, default: T) = lazy {
     (arguments?.get(key) as? T) ?: default
+}
+
+fun TextureView.updateTransform() {
+    val matrix = Matrix()
+
+    // Compute the center of the view finder
+    val centerX = width / 2f
+    val centerY = height / 2f
+
+    // Correct preview output to account for display rotation
+    val rotationDegrees = when (display.rotation) {
+        Surface.ROTATION_0 -> 0
+        Surface.ROTATION_90 -> 90
+        Surface.ROTATION_180 -> 180
+        Surface.ROTATION_270 -> 270
+        else -> return
+    }
+
+    // Finally, apply transformations to our TextureView
+    matrix.postRotate(-rotationDegrees.toFloat(), centerX, centerY)
+    setTransform(matrix)
 }

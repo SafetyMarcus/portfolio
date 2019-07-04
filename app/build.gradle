@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -13,27 +15,49 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        debug { debuggable = true }
+        release
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDir "${buildDir.absolutePath}/generated/source/kaptKotlin/"
+            }
         }
+    }
+
+    kapt {
+        generateStubs = true
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    kapt project(':annotationprocessor')
+    implementation project(':annotationprocessor')
 
     //Architecture
-    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'androidx.core:core-ktx:1.0.2'
     implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
 
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
+
+    //Dependency injection
+    implementation 'org.koin:koin-android:1.0.1'
 
     //UI
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

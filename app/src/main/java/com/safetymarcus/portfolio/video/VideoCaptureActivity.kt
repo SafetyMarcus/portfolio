@@ -1,12 +1,12 @@
 package com.safetymarcus.portfolio.video
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Rational
 import android.util.Size
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.camera.core.*
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
@@ -70,10 +70,17 @@ class VideoCaptureActivity : CoroutineActivity(), VideoCaptureContract.View {
                 record.setImageResource(R.drawable.record)
                 capture.stopRecording()
             }
-            it.toast?.let { toast -> Toast.makeText(this@VideoCaptureActivity, toast, Toast.LENGTH_LONG).show() }
+            showToast(it.toast)
         }
         camera.post { startCamera() }
         camera.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> camera.updateTransform() }
+    }
+
+    private fun showToast(toast: String?) {
+        toast?.let {
+            AlertDialog.Builder(this).setMessage(toast)
+                .setPositiveButton(android.R.string.ok, null).show()
+        }
     }
 
     private fun startCamera() {
@@ -95,14 +102,14 @@ class VideoCaptureActivity : CoroutineActivity(), VideoCaptureContract.View {
         CameraX.bindToLifecycle(this, preview, capture)
     }
 
-    val videoLocation
+    private val videoLocation
         get() = File(
             "${PortfolioApplication.INSTANCE.externalMediaDirs.takeIf { it.isNotEmpty() }?.get(0)?.absolutePath
                 ?: ""}/portfolio/${UUID.randomUUID()}.mp4"
         ).also { it.createNewFile() }
 
     companion object {
-        const val REQUEST_CODE = 1111
+        private const val REQUEST_CODE = 1111
 
         fun startVideoCapture(activity: FragmentActivity) {
             RuntimePermission.askPermission(

@@ -4,6 +4,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 /**
  * This class is designed to hold a view currentState and provide a way for lifecycles to easily observe changes to the [currentState].
@@ -18,6 +22,13 @@ import androidx.lifecycle.ViewModel
  */
 open class ViewStateStore<T : Any>(initialState: T) : ViewModel() {
     private val data = MutableLiveData<T>().apply { value = initialState }
+    private val job = SupervisorJob()
+    private val ui = CoroutineScope(Dispatchers.Main + job)
+
+    override fun onCleared() {
+        super.onCleared()
+        job.cancel()
+    }
 
     fun observe(owner: LifecycleOwner, observer: (T) -> Unit) =
         data.observe(owner, Observer { observer(it) })
@@ -25,6 +36,6 @@ open class ViewStateStore<T : Any>(initialState: T) : ViewModel() {
     var currentState: T
         get() = data.value!!
         set(value) {
-            data.value = value
+            ui.launch { data.value = value }
         }
 }

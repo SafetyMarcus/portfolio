@@ -98,7 +98,7 @@ fun Activity.setFullScreen() {
 }
 
 /**
- * Wraps a property in a [SharedPreferences] instance for get and set calls. This ensures that all writes
+ * Wraps a [String] property in a [SharedPreferences] instance for get and set calls. This ensures that all writes
  * are written immediately to the preferences and all reads have the latest value
  */
 class StringPref(private val prefs: SharedPreferences, private val key: String) : ReadWriteProperty<Any?, String> {
@@ -110,7 +110,7 @@ class StringPref(private val prefs: SharedPreferences, private val key: String) 
 }
 
 /**
- * Wraps a property in a [SharedPreferences] instance for get and set calls. This ensures that all writes
+ * Wraps a [Boolean] property in a [SharedPreferences] instance for get and set calls. This ensures that all writes
  * are written immediately to the preferences and all reads have the latest value
  */
 class BooleanPref(private val prefs: SharedPreferences, private val key: String) : ReadWriteProperty<Any?, Boolean> {
@@ -121,6 +121,10 @@ class BooleanPref(private val prefs: SharedPreferences, private val key: String)
     }
 }
 
+/**
+ * Wraps an [Int] property in a [SharedPreferences] instance for get and set calls. This ensures that all writes
+ * are written immediately to the preferences and all reads have the latest value
+ */
 class IntPref(private val prefs: SharedPreferences, private val key: String, private val default: Int = 0) :
     ReadWriteProperty<Any?, Int> {
 

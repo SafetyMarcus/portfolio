@@ -4,6 +4,8 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.SharedPreferences
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -119,6 +121,16 @@ class BooleanPref(private val prefs: SharedPreferences, private val key: String)
     }
 }
 
+class IntPref(private val prefs: SharedPreferences, private val key: String, private val default: Int = 0) :
+    ReadWriteProperty<Any?, Int> {
+
+    override fun getValue(thisRef: Any?, property: KProperty<*>) = prefs.getInt(key, default)
+
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: Int) {
+        prefs.edit { putInt(key, value) }
+    }
+}
+
 /**
  * Creates a copy of this array but with the replacement at the specified index. This will remove any existing values
  * at that index. This will just be a shallow copy of the existing array.
@@ -158,7 +170,7 @@ val String.initials
 fun Any.sameClass(other: Any) = this.javaClass == other.javaClass
 
 /**
- * Attempts to pull the given key out of the activity's [Intent] extras in a lazy way.
+ * Attempts to pull the given key out of the activity's Intent extras in a lazy way.
  * e.g. val title: String by extra(TITLE, "default title")
  */
 inline fun <reified T : Any> Activity.extra(key: String, default: T) = lazy {
@@ -166,7 +178,7 @@ inline fun <reified T : Any> Activity.extra(key: String, default: T) = lazy {
 }
 
 /**
- * Attempts to pull the given key out of the fragment's [Bundle] arguments in a lazy way.
+ * Attempts to pull the given key out of the fragment's Bundle arguments in a lazy way.
  * e.g. val title: String by argument(TITLE, "default title")
  */
 inline fun <reified T : Any> Fragment.argument(key: String, default: T) = lazy {
@@ -193,3 +205,9 @@ fun TextureView.updateTransform() {
     matrix.postRotate(-rotationDegrees.toFloat(), centerX, centerY)
     setTransform(matrix)
 }
+
+/**
+ * Checks to see if the current resources configuration can be coerced to [Configuration.UI_MODE_NIGHT_YES]
+ */
+val Resources.nightModeEnabled
+    get() = configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES

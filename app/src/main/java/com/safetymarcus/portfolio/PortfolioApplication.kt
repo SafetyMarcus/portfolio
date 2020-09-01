@@ -6,8 +6,9 @@ import com.safetymarcus.portfolio.utils.DispatchScope
 import com.safetymarcus.portfolio.video.VideoCaptureContract
 import com.safetymarcus.portfolio.video.VideoCaptureContractStore
 import com.safetymarcus.portfolio.video.VideoCaptureController
-import org.koin.android.ext.android.startKoin
-import org.koin.dsl.module.module
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
 
 /**
  * @author Marcus Hooper
@@ -24,7 +25,9 @@ class PortfolioApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
-        startKoin(this, listOf(videoModule))
+        startKoin {
+            loadKoinModules(videoModule)
+        }
     }
 
     companion object {

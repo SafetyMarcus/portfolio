@@ -16,6 +16,7 @@ import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.appbar.AppBarLayout
 import kotlin.math.abs
+import kotlin.math.hypot
 
 /**
  * @author Marcus Hooper
@@ -25,7 +26,10 @@ import kotlin.math.abs
  * Creates a scene transition from a [View], including the status bar and navigation bar backgrounds as shared elements.
  * The context of the view will be cast to an activity in ordeer to generate the scene transition.
  */
-fun makeSceneTransition(view: View, elements: ArrayList<Pair<View, String>>): ActivityOptionsCompat {
+fun makeSceneTransition(
+    view: View,
+    elements: ArrayList<Pair<View, String>>
+): ActivityOptionsCompat {
     val activity = view.context as Activity
     activity.findViewById<View>(android.R.id.statusBarBackground)
         ?.let { elements.add(Pair(it, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME)) }
@@ -54,8 +58,8 @@ fun View.circularReveal(
     delay: Long = 0, centerX: Int = width / 2, centerY: Int = height / 2, reverse: Boolean = false,
     startListener: () -> Unit = {}, finishListener: () -> Unit = {}
 ) {
-    val start = if (reverse) Math.hypot(width.toDouble(), height.toDouble()).toFloat() else 0f
-    val end = if (reverse) 0f else Math.hypot(width.toDouble(), height.toDouble()).toFloat()
+    val start = if (reverse) hypot(width.toDouble(), height.toDouble()).toFloat() else 0f
+    val end = if (reverse) 0f else hypot(width.toDouble(), height.toDouble()).toFloat()
     ViewAnimationUtils.createCircularReveal(this, centerX, centerY, start, end).apply {
         addListener(onEnd = {
             if (reverse) isVisible = false
@@ -78,7 +82,11 @@ fun ViewPager.onPageSelected(listener: (Int) -> Unit) {
             //Do nothing
         }
 
-        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        override fun onPageScrolled(
+            position: Int,
+            positionOffset: Float,
+            positionOffsetPixels: Int
+        ) {
             //Do nothing
         }
 
@@ -114,7 +122,11 @@ fun EditText.addTextListener(listener: (String) -> Unit) {
  * Sets up an app bar layout to swap between a [AppCompatTextView] title and a [Toolbar] title
  * depending on the scroll level of the screen.
  */
-fun AppBarLayout.setUpForCollapsingTitle(toolbar: Toolbar, titleBar: AppCompatTextView, title: String) {
+fun AppBarLayout.setUpForCollapsingTitle(
+    toolbar: Toolbar,
+    titleBar: AppCompatTextView,
+    title: String
+) {
     titleBar.text = title
     addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, offset ->
         //Collapsed

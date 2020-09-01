@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="primaryColour">@color/purple_500</color>
+    <color name="primaryColourLight">@color/purple_light</color>
+    <color name="primaryColourDark">@color/purple_dark</color>
+    <color name="accentColour">@color/magenta_500</color>
+    <color name="textOnPrimary">@color/high_emphasis_dark_background</color>
+    <color name="textOnAccent">@color/high_emphasis_dark_background</color>
+    <color name="surfaceColour">@color/purple_500</color>
+    <color name="highlightOnSurface">@color/high_emphasis_dark_background</color>
+
+    <!-- Text -->
+    <color name="high_emphasis_light_background">#DE000000</color>
+    <color name="high_emphasis_dark_background">#DEFFFFFF</color>
+    <color name="medium_emphasis_light_background">#99000000</color>
+    <color name="medium_emphasis_dark_background">#99FFFFFF</color>
+
+    <!-- Palette -->
+    <color name="purple_500">#673ab7</color>
+    <color name="purple_200">#b39ddb</color>
+    <color name="purple_light">#7953d2</color>
+    <color name="purple_dark">#000070</color>
+    <color name="magenta_500">#9c27b0</color>
+    <color name="magenta_200">#ce93d8</color>
+
+    <!-- Backgrounds -->
+    <color name="background_900">#373737</color>
+    <color name="background_0">#FAFAFA</color>
 </resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColour">@color/purple_200</color>
+    <color name="primaryColourLight">#e6ceff</color>
+    <color name="primaryColourDark">#836fa9</color>
+    <color name="accentColour">@color/magenta_200</color>
+    <color name="textOnPrimary">@color/high_emphasis_light_background</color>
+    <color name="textOnAccent">@color/high_emphasis_light_background</color>
+    <color name="surfaceColour">@color/background_900</color>
+    <color name="highlightOnSurface">@color/accentColour</color>
+</resources>

@@ -52,7 +52,8 @@ fun Int.getIntRes() = PortfolioApplication.INSTANCE.resources.getInteger(this)
  * Uses the application singleton instance to attempt to resolve the integer (id) into a [Drawable]
  * This is the same as calling [ResourcesCompat.getDrawable]
  */
-fun Int.getDrawable(): Drawable? = ResourcesCompat.getDrawable(PortfolioApplication.INSTANCE.resources, this, null)
+fun Int.getDrawable(): Drawable? =
+    ResourcesCompat.getDrawable(PortfolioApplication.INSTANCE.resources, this, null)
 
 /**
  * Returns the current integer in pixels after conversion based on device independent pixels, or 1 if that values is <= 0
@@ -80,13 +81,15 @@ fun View.scaleTo(scale: Float) {
  * Logs the message with the exception on a new line if it exists, tagged using the calling class's name as a DEBUG
  * level log message
  */
-fun Any.logDebug(message: String, e: Exception? = null) = Log.d("$javaClass", "$message${"\n${e?.message ?: ""}"}")
+fun Any.logDebug(message: String, e: Exception? = null) =
+    Log.d("$javaClass", "$message${"\n${e?.message ?: ""}"}")
 
 /**
  * Logs the message with the exception on a new line if it exists, tagged using the calling class's name as an INFO
  * level log message
  */
-fun Any.logInfo(message: String, e: Exception? = null) = Log.i("$javaClass", "$message${"\n${e?.message ?: ""}"}")
+fun Any.logInfo(message: String, e: Exception? = null) =
+    Log.i("$javaClass", "$message${"\n${e?.message ?: ""}"}")
 
 /**
  * Used to set an activity to full screen. This should be used for interactions such as recording and watching videos
@@ -101,7 +104,8 @@ fun Activity.setFullScreen() {
  * Wraps a [String] property in a [SharedPreferences] instance for get and set calls. This ensures that all writes
  * are written immediately to the preferences and all reads have the latest value
  */
-class StringPref(private val prefs: SharedPreferences, private val key: String) : ReadWriteProperty<Any?, String> {
+class StringPref(private val prefs: SharedPreferences, private val key: String) :
+    ReadWriteProperty<Any?, String> {
     override fun getValue(thisRef: Any?, property: KProperty<*>) = prefs.getString(key, "") ?: ""
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
@@ -113,7 +117,8 @@ class StringPref(private val prefs: SharedPreferences, private val key: String) 
  * Wraps a [Boolean] property in a [SharedPreferences] instance for get and set calls. This ensures that all writes
  * are written immediately to the preferences and all reads have the latest value
  */
-class BooleanPref(private val prefs: SharedPreferences, private val key: String) : ReadWriteProperty<Any?, Boolean> {
+class BooleanPref(private val prefs: SharedPreferences, private val key: String) :
+    ReadWriteProperty<Any?, Boolean> {
     override fun getValue(thisRef: Any?, property: KProperty<*>) = prefs.getBoolean(key, false)
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: Boolean) {
@@ -125,7 +130,11 @@ class BooleanPref(private val prefs: SharedPreferences, private val key: String)
  * Wraps an [Int] property in a [SharedPreferences] instance for get and set calls. This ensures that all writes
  * are written immediately to the preferences and all reads have the latest value
  */
-class IntPref(private val prefs: SharedPreferences, private val key: String, private val default: Int = 0) :
+class IntPref(
+    private val prefs: SharedPreferences,
+    private val key: String,
+    private val default: Int = 0
+) :
     ReadWriteProperty<Any?, Int> {
 
     override fun getValue(thisRef: Any?, property: KProperty<*>) = prefs.getInt(key, default)

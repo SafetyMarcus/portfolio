@@ -21,7 +21,7 @@ import javax.lang.model.element.VariableElement
 class ViewStateFactory(element: Element) {
     private var enclosed: Element? = null
     private val properties by lazy {
-        enclosed?.enclosedElements?.filter { it is VariableElement } ?: listOf()
+        enclosed?.enclosedElements?.filterIsInstance<VariableElement>() ?: listOf()
     }
 
     val fileName = "${element.simpleName}ViewState"
@@ -49,7 +49,10 @@ class ViewStateFactory(element: Element) {
  * Factory used to generate the constructors for a view state class. This should only be used
  * by [ViewStateFactory]
  */
-class ConstructorFactory(private val properties: List<Element>, private val classBuilder: TypeSpec.Builder) {
+class ConstructorFactory(
+    private val properties: List<Element>,
+    private val classBuilder: TypeSpec.Builder
+) {
     /**
      * Creates the constructor for the view state, taking into account need to extend other classes
      * and override properties, and adds them to the passed in [classBuilder]

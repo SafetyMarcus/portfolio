@@ -18,8 +18,9 @@ class SettingsActivity : AppCompatActivity() {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        AppCompatDelegate.setDefaultNightMode(nightMode)
         super.onCreate(savedInstanceState)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setContentView(R.layout.settings)
         themeSwitch.isChecked = nightMode != AppCompatDelegate.MODE_NIGHT_NO && resources.nightModeEnabled
         themeSwitch.setOnCheckedChangeListener { _, checked ->

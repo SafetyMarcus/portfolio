@@ -5,10 +5,11 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primaryColour</item>
         <item name="colorPrimaryDark">@color/primaryColourDark</item>
-        <item name="colorOnPrimary">@color/textOnPrimary</item>
         <item name="colorAccent">@color/accentColour</item>
-        <item name="colorOnSecondary">@color/textOnAccent</item>
         <item name="colorSurface">@color/surfaceColour</item>
+        <item name="colorOnPrimary">@color/textOnPrimary</item>
+        <item name="colorOnSurface">@color/textOnSurface</item>
+        <item name="colorOnSecondary">@color/textOnAccent</item>
     </style>
 
     <style name="AppTheme.Fullscreen" parent="AppTheme">

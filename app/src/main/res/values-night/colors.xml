@@ -6,6 +6,8 @@
     <color name="accentColour">@color/magenta_200</color>
     <color name="textOnPrimary">@color/high_emphasis_light_background</color>
     <color name="textOnAccent">@color/high_emphasis_light_background</color>
+    <color name="textOnSurface">@color/high_emphasis_dark_background</color>
     <color name="surfaceColour">@color/background_900</color>
-    <color name="highlightOnSurface">@color/accentColour</color>
+    <color name="highlightSurface">@color/background_900</color>
+    <color name="highlightOnSurface">@color/magenta_200</color>
 </resources>

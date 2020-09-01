@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.safetymarcus.portfolio.core.CoroutineActivity
 import java.io.Serializable
 
 /**

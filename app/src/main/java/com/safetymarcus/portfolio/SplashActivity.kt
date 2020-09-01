@@ -2,7 +2,7 @@ package com.safetymarcus.portfolio
 
 import android.content.Intent
 import android.os.Bundle
-import com.safetymarcus.portfolio.utils.CoroutineActivity
+import com.safetymarcus.portfolio.core.CoroutineActivity
 
 /**
  * @author Marcus Hooper

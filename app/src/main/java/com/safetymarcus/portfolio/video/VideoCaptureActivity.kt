@@ -9,28 +9,28 @@ import android.util.Size
 import android.view.ViewGroup
 import androidx.camera.core.*
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProviders
 import com.github.florent37.runtimepermission.RuntimePermission
 import com.safetymarcus.portfolio.PortfolioApplication
 import com.safetymarcus.portfolio.R
-import com.safetymarcus.portfolio.utils.CoroutineActivity
+import com.safetymarcus.portfolio.core.CoroutineActivity
 import com.safetymarcus.portfolio.utils.updateTransform
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.video_capture_activity.*
-import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parametersOf
 import java.io.File
 import java.util.*
+import javax.inject.Inject
 
 /**
  * @author Marcus Hooper
  */
+@AndroidEntryPoint
 class VideoCaptureActivity : CoroutineActivity(), VideoCaptureContract.View {
 
     private lateinit var preview: Preview
     private lateinit var capture: VideoCapture
-    private val controller: VideoCaptureController by inject {
-        parametersOf(this, ViewModelProviders.of(this).get(VideoCaptureStore::class.java), this)
-    }
+
+    @Inject
+    lateinit var controller: VideoCaptureController
 
     // Configuration object for the video capture
     private val config
@@ -58,7 +58,8 @@ class VideoCaptureActivity : CoroutineActivity(), VideoCaptureContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.video_capture_activity)
         File(
-            "${PortfolioApplication.INSTANCE.externalMediaDirs.takeIf { it.isNotEmpty() }?.get(0)?.absolutePath
+            "${PortfolioApplication.INSTANCE.externalMediaDirs.takeIf { it.isNotEmpty() }
+                ?.get(0)?.absolutePath
                 ?: ""}/portfolio/"
         ).mkdirs()
 
@@ -104,7 +105,8 @@ class VideoCaptureActivity : CoroutineActivity(), VideoCaptureContract.View {
 
     private val videoLocation
         get() = File(
-            "${PortfolioApplication.INSTANCE.externalMediaDirs.takeIf { it.isNotEmpty() }?.get(0)?.absolutePath
+            "${PortfolioApplication.INSTANCE.externalMediaDirs.takeIf { it.isNotEmpty() }
+                ?.get(0)?.absolutePath
                 ?: ""}/portfolio/${UUID.randomUUID()}.mp4"
         ).also { it.createNewFile() }
 

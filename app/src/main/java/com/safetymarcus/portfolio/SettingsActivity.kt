@@ -3,6 +3,7 @@ package com.safetymarcus.portfolio
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.safetymarcus.portfolio.core.CoroutineActivity
 import com.safetymarcus.portfolio.utils.IntPref
 import com.safetymarcus.portfolio.utils.nightModeEnabled
 import kotlinx.android.synthetic.main.settings.*
@@ -10,7 +11,7 @@ import kotlinx.android.synthetic.main.settings.*
 /**
  * @author Marcus Hooper
  */
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : CoroutineActivity() {
     private var nightMode: Int by IntPref(
         PortfolioApplication.prefs,
         "theme",

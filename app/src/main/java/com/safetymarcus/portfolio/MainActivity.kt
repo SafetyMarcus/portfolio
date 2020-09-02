@@ -1,16 +1,15 @@
 package com.safetymarcus.portfolio
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
+import androidx.core.app.ActivityOptionsCompat
+import com.safetymarcus.portfolio.core.CoroutineActivity
 import com.safetymarcus.portfolio.utils.IntentBuilder.Companion.startActivity
-import com.safetymarcus.portfolio.utils.getDrawable
+import com.safetymarcus.portfolio.utils.convertToPixels
 import com.safetymarcus.portfolio.video.VideoCaptureActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : CoroutineActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -3,7 +3,9 @@ package com.safetymarcus.portfolio.core
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.safetymarcus.portfolio.R
 import com.safetymarcus.portfolio.utils.DispatchScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

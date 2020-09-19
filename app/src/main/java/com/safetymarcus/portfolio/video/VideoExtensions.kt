@@ -29,7 +29,7 @@ val File.milliseconds: Long
             setDataSource(PortfolioApplication.INSTANCE, Uri.fromFile(this@milliseconds))
         }
         return try {
-            resolver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION).toLong()
+            resolver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLong() ?: 0L
         } catch (e: IllegalStateException) {
             logDebug("File ${this.path} does not contain duration metadata", e)
             0

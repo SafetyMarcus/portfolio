@@ -2,11 +2,14 @@ package com.safetymarcus.portfolio.video
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Rational
 import android.util.Size
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.camera.core.*
 import androidx.fragment.app.FragmentActivity
 import com.github.florent37.runtimepermission.RuntimePermission
@@ -58,9 +61,11 @@ class VideoCaptureActivity : CoroutineActivity(), VideoCaptureContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.video_capture_activity)
         File(
-            "${PortfolioApplication.INSTANCE.externalMediaDirs.takeIf { it.isNotEmpty() }
-                ?.get(0)?.absolutePath
-                ?: ""}/portfolio/"
+            "${
+                PortfolioApplication.INSTANCE.externalMediaDirs.takeIf { it.isNotEmpty() }
+                    ?.get(0)?.absolutePath
+                    ?: ""
+            }/portfolio/"
         ).mkdirs()
 
         controller.store.observe(this) {
@@ -96,7 +101,7 @@ class VideoCaptureActivity : CoroutineActivity(), VideoCaptureContract.View {
                 addView(camera, 0)
             }
 
-            camera.surfaceTexture = it.surfaceTexture
+            camera.setSurfaceTexture(it.surfaceTexture)
             camera.updateTransform()
         }
 
@@ -104,26 +109,34 @@ class VideoCaptureActivity : CoroutineActivity(), VideoCaptureContract.View {
     }
 
     private val videoLocation
-        get() = File(
-            "${PortfolioApplication.INSTANCE.externalMediaDirs.takeIf { it.isNotEmpty() }
+        get() = File("${
+            PortfolioApplication.INSTANCE.externalMediaDirs.takeIf { it.isNotEmpty() }
                 ?.get(0)?.absolutePath
-                ?: ""}/portfolio/${UUID.randomUUID()}.mp4"
-        ).also { it.createNewFile() }
+                ?: ""
+        }/portfolio/${UUID.randomUUID()}.mp4").also { it.createNewFile() }
 
     companion object {
-        private const val REQUEST_CODE = 1111
+        private const val LOCATION = "location"
 
-        fun startVideoCapture(activity: FragmentActivity) {
+        private val contract = object : ActivityResultContract<String, String>() {
+            override fun createIntent(context: Context, input: String?) =
+                Intent(context, VideoCaptureActivity::class.java)
+
+            override fun parseResult(resultCode: Int, intent: Intent?) =
+                intent?.getStringExtra(LOCATION)
+        }
+
+        fun startVideoCapture(
+            activity: FragmentActivity,
+            callback: ActivityResultCallback<String>
+        ) {
             RuntimePermission.askPermission(
                 activity,
                 Manifest.permission.RECORD_AUDIO,
                 Manifest.permission.CAMERA,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ).ask {
-                if (it.isAccepted) activity.startActivityForResult(
-                    Intent(activity, VideoCaptureActivity::class.java),
-                    REQUEST_CODE
-                )
+                if (it.isAccepted) activity.registerForActivityResult(contract, callback)
             }
         }
     }

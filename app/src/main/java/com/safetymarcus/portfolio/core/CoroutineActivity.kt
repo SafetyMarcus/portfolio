@@ -1,8 +1,10 @@
 package com.safetymarcus.portfolio.core
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.safetymarcus.portfolio.R
@@ -27,6 +29,8 @@ abstract class CoroutineActivity : AppCompatActivity(), DispatchScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         job = Job()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R)
+            window.setDecorFitsSystemWindows(false)
     }
 
     override fun onResume() {

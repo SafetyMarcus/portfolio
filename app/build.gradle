@@ -7,6 +7,8 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
 android {
     compileSdkVersion 30
     defaultConfig {
@@ -66,7 +68,12 @@ dependencies {
 
     //UI
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
-    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+
+    //Navigation
+    def nav_version = "2.3.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     //Camera
     def camerax_version = "1.0.0-alpha02"

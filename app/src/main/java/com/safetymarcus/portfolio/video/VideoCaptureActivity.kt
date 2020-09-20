@@ -16,6 +16,7 @@ import com.github.florent37.runtimepermission.RuntimePermission
 import com.safetymarcus.portfolio.PortfolioApplication
 import com.safetymarcus.portfolio.R
 import com.safetymarcus.portfolio.core.CoroutineActivity
+import com.safetymarcus.portfolio.utils.startActivityForResult
 import com.safetymarcus.portfolio.utils.updateTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.video_capture_activity.*
@@ -136,7 +137,9 @@ class VideoCaptureActivity : CoroutineActivity(), VideoCaptureContract.View {
                 Manifest.permission.CAMERA,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ).ask {
-                if (it.isAccepted) activity.registerForActivityResult(contract, callback)
+                if (it.isAccepted) {
+                    activity.registerForActivityResult(contract, callback).launch("video/*")
+                }
             }
         }
     }

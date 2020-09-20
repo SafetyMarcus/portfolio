@@ -92,15 +92,6 @@ fun Any.logInfo(message: String, e: Exception? = null) =
     Log.i("$javaClass", "$message${"\n${e?.message ?: ""}"}")
 
 /**
- * Used to set an activity to full screen. This should be used for interactions such as recording and watching videos
- */
-fun Activity.setFullScreen() {
-    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-            View.SYSTEM_UI_FLAG_FULLSCREEN or
-            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-}
-
-/**
  * Wraps a [String] property in a [SharedPreferences] instance for get and set calls. This ensures that all writes
  * are written immediately to the preferences and all reads have the latest value
  */
